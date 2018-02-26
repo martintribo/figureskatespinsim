@@ -5,15 +5,16 @@
     <title>title</title>
 </head>
 <body>
-    <canvas width="800" height="600" style="display: inline;"></canvas>
+    <canvas id="rink-canvas" width="800" height="600" style="display: inline;"></canvas>
+    <canvas id="skate-canvas" width="80" height="200" style="display: inline;"></canvas>
     <span id="leanx" style="vertical-align: top;"></span>
 </body>
 <script>
     var WIDTH = 800;
     var HEIGHT = 600;
-    var canvas = document.querySelector('canvas');
+    var FWIDTH = 80;
+    var FLENGTH = 200;
     var leanXTxt = document.querySelector('#leanx');
-    var ctx = canvas.getContext('2d');
     
     var leanX = 0;
     var leanY = 0.5;
@@ -25,33 +26,6 @@
     
     var interval = 33;
     var ticksPerSecond = 1000 / interval;
-
-    var lxModifier = 0.1;
-    document.addEventListener('keydown', function (e) {
-        console.log(e.keyCode);
-        if (e.keyCode === 37) {
-            leanX -= lxModifier;
-        } else if (e.keyCode === 39) {
-            leanX += lxModifier;
-        }
-
-        leanX = Math.min(leanX, 1);
-        leanX = Math.max(leanX, -1);
-    });
-
-    function render() {
-        leanXTxt.innerHTML = leanX;
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-        ctx.fillStyle = 'lightblue';
-        ctx.fillRect(0, 0, WIDTH, HEIGHT);
-
-        ctx.translate(x, y);
-        ctx.rotate(orientation);
-
-        ctx.fillStyle = 'red';
-        ctx.fillRect(-5, -5, 10, 10);
-    }
 
     setInterval(function () {
         angVel = leanX * Math.PI;
@@ -69,6 +43,7 @@
             y = 300;
         }
         render();
+        renderSkateDiagram();
     }, 33);
 
     /*
@@ -102,5 +77,57 @@
             New Orientation * Forward/Backward Speed
     
     */
+
+    var lxModifier = 0.1;
+    var lyModifier = 0.1;
+    document.addEventListener('keydown', function (e) {
+        console.log(e.keyCode);
+        if (e.keyCode === 37) {
+            leanX -= lxModifier;
+        } else if (e.keyCode === 39) {
+            leanX += lxModifier;
+        } else if (e.keyCode === 38) {
+            leanY += lyModifier;
+        } else if (e.keyCode === 40) {
+            leanY -= lyModifier;
+        }
+
+        leanX = Math.min(leanX, 1);
+        leanX = Math.max(leanX, -1);
+        leanY = Math.min(leanY, 1);
+        leanY = Math.max(leanY, -1);
+    });
+
+    var canvas = document.querySelector('#rink-canvas');
+    var ctx = canvas.getContext('2d');
+    function render() {
+        leanXTxt.innerHTML = leanX;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+        ctx.fillStyle = 'lightblue';
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        ctx.translate(x, y);
+        ctx.rotate(orientation);
+
+        ctx.fillStyle = 'red';
+        ctx.fillRect(-5, -5, 10, 10);
+    }
+
+    var skateCanvas = document.querySelector('#skate-canvas');
+    var sctx = skateCanvas.getContext('2d');
+    function renderSkateDiagram() {
+        sctx.setTransform(1, 0, 0, 1, 0, 0);
+        sctx.fillStyle = 'black';
+        sctx.fillRect(0, 0, 80, 200);
+
+        sctx.translate(FWIDTH / 2, FLENGTH / 2);
+        sctx.translate(leanX * FWIDTH / 2, -leanY * FLENGTH / 2);
+
+        sctx.fillStyle = 'red';
+        sctx.fillRect(-5, -5, 10, 10);
+
+        sctx.translate()
+    }
 </script>
 </html>
