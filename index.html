@@ -6,14 +6,15 @@
 </head>
 <body>
     <canvas id="rink-canvas" width="800" height="600" style="display: inline;"></canvas>
-    <canvas id="skate-canvas" width="80" height="200" style="display: inline;"></canvas>
+    <canvas id="skate-canvas" width="80" height="160" style="display: inline;vertical-align: top;"></canvas>
     <span id="leanx" style="vertical-align: top;"></span>
 </body>
 <script>
     var WIDTH = 800;
     var HEIGHT = 600;
     var FWIDTH = 80;
-    var FLENGTH = 200;
+    var FLENGTH = 160;
+    var ROCKER_START = 0.8;
     var leanXTxt = document.querySelector('#leanx');
     
     var leanX = 0;
@@ -75,7 +76,14 @@
             [] Restrain within limits
         Skate Position
             New Orientation * Forward/Backward Speed
-    
+        
+
+        Future Ideas
+            Lean is "steered" or biased by how body wants to balance in frame
+
+        Two current thoughts of simulation
+            One - Angular velocity + linear velocity
+            Two - Angular Velocity + body mass momentum + linear velocity
     */
 
     var lxModifier = 0.1;
@@ -123,13 +131,24 @@
 
         // TODO: Draw line for rocker starting point/range
 
+        var rocker = FLENGTH - ROCKER_START * FLENGTH;
+        sctx.fillStyle = 'green';
+        sctx.fillRect(0, rocker - 2, FWIDTH, 4);
+
+        sctx.fillStyle = 'lightgrey';
+        sctx.fillRect(FWIDTH / 2 - 2, 0, 4, FLENGTH);
+
         sctx.translate(FWIDTH / 2, FLENGTH / 2);
         sctx.translate(leanX * FWIDTH / 2, -leanY * FLENGTH / 2);
 
         sctx.fillStyle = 'red';
         sctx.fillRect(-5, -5, 10, 10);
 
-        sctx.translate()
+        // sctx.translate();
+    }
+
+    function halfLife(value, target) {
+
     }
 </script>
 </html>
