@@ -1,0 +1,17 @@
+{
+    "name": "figureskatespinsim",
+    "version": "0.0.0",
+    "license": "MIT",
+    "dependencies": {
+        "@std/esm": "^0.24.0",
+        "eslint": "^4.18.2",
+        "webpack": "^4.0.1",
+        "webpack-cli": "^2.0.10",
+        "webpack-dev-server": "^3.1.0"
+    },
+    "scripts": {
+        "start": "webpack-dev-server -r @std/esm --config webpack.config.mjs",
+        "build": "webpack -r @std/esm --config webpack.config.mjs",
+        "watch": "webpack -r @std/esm --config webpack.config.mjs -w"
+    }
+}
